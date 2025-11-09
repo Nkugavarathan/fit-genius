@@ -8,10 +8,11 @@ import Navbar from "./components/Navbar"
 import Home from "./pages/Home"
 import WorkoutTable from "./pages/WorkoutTable"
 import About from "./pages/About"
-
+import { Toaster } from "react-hot-toast"
 export default function App() {
   return (
     <>
+      <Toaster />
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />

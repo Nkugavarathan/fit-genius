@@ -3,17 +3,23 @@ import { AuthContext } from "../context/AuthContext"
 import api from "../api/axios"
 import { useNavigate } from "react-router-dom"
 import { Link } from "react-router-dom"
+import toast from "react-hot-toast"
 export default function Login() {
   const { login } = useContext(AuthContext)
   const navigate = useNavigate()
 
   const [data, setData] = useState({ email: "", password: "" })
-
   const handleSubmit = async (e) => {
     e.preventDefault()
-    const res = await api.post("/auth/login", data)
-    login(res.data.token)
-    navigate("/dashboard")
+    try {
+      const res = await api.post("/auth/login", data)
+      login(res.data.token)
+      toast.success("Successfully logged in 🎉")
+      navigate("/dashboard")
+    } catch (err) {
+      console.error("Login failed:", err.response?.data || err.message)
+      toast.error(err.response?.data?.message || "Login failed ❌")
+    }
   }
 
   return (

@@ -17,6 +17,7 @@ public class WorkoutService {
     private final WorkoutRepository workoutRepository;
     private final UserRepository userRepository;
 
+
 // add workout for user
 public Workout addWorkout(String email,Workout workout){
     User user=userRepository.findByEmail(email).orElseThrow();
@@ -27,9 +28,14 @@ public Workout addWorkout(String email,Workout workout){
     return workoutRepository.save(workout);
 }
     //get user workouts
-    public List<Workout> getUserWorkouts(String email){
-        User user=userRepository.findByEmail(email).orElseThrow();
-        return workoutRepository.findByUser(user);
+//    public List<Workout> getUserWorkouts(String email){
+//        User user=userRepository.findByEmail(email).orElseThrow();
+//        return workoutRepository.findByUser(user);
+//    }
+
+    public List<Workout> getUserWorkouts(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow();
+        return workoutRepository.findByUserIdOrderByDateAsc(user.getId());
     }
     //  Update workout
     public Workout updateWorkout(String email, Long workoutId, Workout updatedWorkout) {

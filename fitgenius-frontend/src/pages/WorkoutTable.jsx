@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react"
-import api from "../api/axiosInstance"
-
+import api from "../api/axiosInstance.js"
+import toast from "react-hot-toast"
 const WorkoutTable = () => {
   const [workouts, setWorkouts] = useState([])
   const [form, setForm] = useState({ exerciseName: "", sets: "", reps: "" })
@@ -10,10 +10,17 @@ const WorkoutTable = () => {
   }, [])
 
   const loadWorkouts = async () => {
+    const loadingToast = toast.loading("Loading workouts...")
+
     try {
-      const res = await api.get("/api/workouts")
+      const res = await api.get("/workouts")
+      console.log(res)
+      toast.dismiss(loadingToast) // remove loading toast
+      toast.success("Workouts loaded ✅")
       setWorkouts(res.data)
     } catch (err) {
+      toast.error(err.message, "❌")
+
       console.error(
         "Failed to load workouts:",
         err.response?.data || err.message
@@ -24,8 +31,10 @@ const WorkoutTable = () => {
   const submitWorkout = async (e) => {
     e.preventDefault()
     try {
-      await api.post("/api/workouts", form)
+      await api.post("/workouts", form)
       setForm({ exerciseName: "", sets: "", reps: "" })
+      toast.success("Workout created successfully ")
+
       loadWorkouts()
     } catch (err) {
       console.error("Failed to add workout:", err.response?.data || err.message)
@@ -34,13 +43,15 @@ const WorkoutTable = () => {
 
   const removeWorkout = async (id) => {
     try {
-      await api.delete(`/api/workouts/${id}`)
+      await api.delete(`/workouts/${id}`)
+      toast.success("Workout deleted successfully ")
       loadWorkouts()
     } catch (err) {
       console.error(
         "Failed to delete workout:",
         err.response?.data || err.message
       )
+      toast.error("Failed to delete workout ")
     }
   }
 

@@ -10,4 +10,7 @@ import java.util.List;
 public interface WorkoutRepository extends JpaRepository<Workout,Long> {
     List<Workout> findByUser(User user);
 
+    List<Workout> findByUserIdOrderByDateAsc(Long userId);
+
+
 }
