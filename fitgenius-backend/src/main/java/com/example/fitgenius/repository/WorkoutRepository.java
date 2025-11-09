@@ -1,12 +1,11 @@
 package com.example.fitgenius.repository;
 
 import com.example.fitgenius.model.User;
+import com.example.fitgenius.model.Workout;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.Optional;
+import java.util.List;
 @Repository
-public interface UserRepository extends JpaRepository <User,Long>{
-    Optional<User> findByEmail(String email);
-}
-
+public interface WorkoutRepository extends JpaRepository<Workout,Long> {
+    List<Workout> findByUser(User user);}
